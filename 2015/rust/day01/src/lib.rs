@@ -1,29 +1,31 @@
 pub fn proc_part1(input: &str) -> String {
-    let mut floor = 0;
-    for ch in input.chars() {
-        if ch == '(' {
-            floor += 1;
-        } else if ch == ')' {
-            floor -= 1;
-        }
-    }
+    let floor = input
+        .chars()
+        .map(|c| match c {
+            '(' => 1,
+            ')' => -1,
+            _ => panic!("Invaild character: `{c}`"),
+        })
+        .sum::<i32>();
+
     floor.to_string()
 }
 
 pub fn proc_part2(input: &str) -> String {
     let mut floor = 0;
-    for (index, ch) in input.chars().enumerate() {
-        if ch == '(' {
-            floor += 1;
-        } else if ch == ')' {
-            floor -= 1;
-        }
+    for (pos, ch) in input.chars().enumerate() {
+        floor += match ch {
+            '(' => 1,
+            ')' => -1,
+            _ => panic!("Invaild character: `{ch}`"),
+        };
         if floor == -1 {
-            let pos = index + 1;
+            let pos = pos + 1;
             return pos.to_string();
         }
     }
-    unreachable!("");
+
+    return " ".to_string();
 }
 
 #[cfg(test)]
