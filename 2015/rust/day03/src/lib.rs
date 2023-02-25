@@ -1,4 +1,16 @@
 use std::collections::HashSet;
+use std::{fs, time::Instant};
+
+pub fn benhmark(name: &str, proc: &dyn Fn(&str) -> String) {
+    let input = fs::read_to_string("./input.txt").unwrap();
+
+    let time = Instant::now();
+    let answer = proc(&input);
+    let duration = time.elapsed().as_micros();
+
+    println!("{name}: {answer}");
+    println!("Duration: {duration} μs");
+}
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Direction {
@@ -22,9 +34,9 @@ pub fn parse_input(input: &str) -> Vec<Direction> {
         .collect()
 }
 
-pub fn proc_part1(input: String) -> String {
+pub fn proc_part1(input: &str) -> String {
     let mut visited_houses: HashSet<(i32, i32)> = HashSet::new();
-    let path = parse_input(&input);
+    let path = parse_input(input);
 
     let (mut sx, mut sy) = (0, 0);
     visited_houses.insert((0, 0));
@@ -41,9 +53,9 @@ pub fn proc_part1(input: String) -> String {
     visited_houses.len().to_string()
 }
 
-pub fn proc_part2(input: String) -> String {
+pub fn proc_part2(input: &str) -> String {
     let mut visited_houses: HashSet<(i32, i32)> = HashSet::new();
-    let path = parse_input(&input);
+    let path = parse_input(input);
 
     let (mut sx, mut sy) = (0, 0);
     let (mut rx, mut ry) = (0, 0);
@@ -93,36 +105,48 @@ mod proc_part1 {
     }
     #[test]
     fn test01() {
-        assert_eq!(proc_part1(">".to_string()), "2");
+        assert_eq!(proc_part1(">"), "2");
     }
 
     #[test]
     fn test02() {
-        assert_eq!(proc_part1("^>v<".to_string()), "4");
+        assert_eq!(proc_part1("^>v<"), "4");
     }
 
     #[test]
     fn test03() {
-        assert_eq!(proc_part1("^v^v^v^v^v".to_string()), "2");
+        assert_eq!(proc_part1("^v^v^v^v^v"), "2");
+    }
+
+    #[test]
+    fn test_proc_part1() {
+        let input = fs::read_to_string("./input.txt").unwrap();
+        assert_eq!(proc_part1(&input), "2081");
     }
 }
 
 #[cfg(test)]
 mod proc_part2 {
-    use super::proc_part2;
+    use super::*;
 
     #[test]
     fn test01() {
-        assert_eq!(proc_part2("^v".to_string()), "3");
+        assert_eq!(proc_part2("^v"), "3");
     }
 
     #[test]
     fn test02() {
-        assert_eq!(proc_part2("^>v<".to_string()), "3");
+        assert_eq!(proc_part2("^>v<"), "3");
     }
 
     #[test]
     fn test03() {
-        assert_eq!(proc_part2("^v^v^v^v^v".to_string()), "11");
+        assert_eq!(proc_part2("^v^v^v^v^v"), "11");
+    }
+
+    #[test]
+    fn test_proc_part2() {
+        let input = fs::read_to_string("./input.txt").unwrap();
+        assert_eq!(proc_part2(&input), "2341");
     }
 }

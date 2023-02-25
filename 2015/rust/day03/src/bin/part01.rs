@@ -1,8 +1,5 @@
-use day03::proc_part1;
-
-use std::fs;
+use day03::*;
 
 fn main() {
-    let input = fs::read_to_string("./input.txt").unwrap();
-    println!("{}", proc_part1(input));
+    benhmark("part 1", &proc_part1);
 }
