@@ -1,6 +1,7 @@
 use std::{fs, time::Instant};
 
 pub fn benhmark(name: String, proc: &dyn Fn(&str) -> String) {
+pub fn benhmark(name: String, proc: &dyn Fn(&str) -> Option<i32>) {
     let input = fs::read_to_string("./input.txt").unwrap();
 
     let time = Instant::now();
